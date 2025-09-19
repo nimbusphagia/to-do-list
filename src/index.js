@@ -1,0 +1,41 @@
+//GUI
+import "./css/main.css";
+import Sidebar from "./gui/Sidebar";
+
+//MODEL
+import List from "./classes/List";
+import Task from "./classes/Task";
+
+const appController = () => {
+    const lists = [];
+    const mockContent = () => {
+        const task1 = new Task();
+        const task2 = new Task();
+        const task3 = new Task();
+        const task4 = new Task();
+        const task5 = new Task();
+        const task6 = new Task();
+        const task7 = new Task();
+        const task8 = new Task();
+        const task9 = new Task();
+        const task10 = new Task();
+        const list1 = new List("List 1", [task1, task2, task3, task4, task5],);
+        const list2 = new List("List 1", [task6, task7, task8, task9],);
+        const list3 = new List("List 3", [task10],);
+        lists.push(list1);
+        lists.push(list2);
+        lists.push(list3);
+    }
+    const renderGui = () => {
+        const sidebar = new Sidebar();
+        sidebar.render(lists);
+    }
+    return { renderGui, mockContent}
+}
+
+const app = appController();
+app.mockContent();
+app.renderGui();
+
+
+console.log("all working");
