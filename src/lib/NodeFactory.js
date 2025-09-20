@@ -1,12 +1,15 @@
 class NodeFactory {
     //CONTAINER DIV
-    static newContainer(childrenNodes = [], classList = []) {
+    static newContainer(childrenNodes = [], classList = [], id = null) {
         const divNode = document.createElement("div");
         for (const className of classList) {
             divNode.classList.add(className)
         }
         for (const node of childrenNodes) {
             divNode.appendChild(node);
+        }
+        if(id != null){
+            divNode.id = id;
         }
         return divNode;
     }
@@ -36,6 +39,16 @@ class NodeFactory {
         }
         titleNode.textContent = textContent;
         return titleNode;
+    }
+    static newBtn(type, textContent, classList = []) {
+        const btn = document.createElement("button");
+        btn.type = type;
+        btn.textContent = textContent;
+        for (const className of classList) {
+            btn.classList.add(className)
+        }
+
+        return btn;
     }
 }
 export default NodeFactory;
