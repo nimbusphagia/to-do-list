@@ -51,11 +51,7 @@ const appController = () => {
                     main.render(currentList);
                 }
             }
-
-
         })
-
-
     }
     return { renderGui, mockContent }
 }

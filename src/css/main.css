@@ -15,9 +15,14 @@ body {
     --bg1: #d1d1d1;
     --bg2: #c1c1c1;
     --divBorder1: 1.8px solid black;
+    --divBorder2: 2px solid black;
     --divRadius: 6px;
     --btnBorder: 1.5px solid black;
     --btnRadius: 5px;
+    --btnBgActive: #c5c5c5bd;
+    --btnFontActive: #000000e4;
+    --bgFocus: #d0d0d077;
+    --borderFocus: 2px solid #ab535e;
 }
 
 h1,
@@ -31,21 +36,144 @@ h6 {
     font-weight: 550;
 }
 
+input,
+textarea {
+    background-color: transparent;
+    border: var(--btnBorder);
+    border-radius: var(--btnRadius);
+    text-align: center;
+    font-family: Helvetica, Arial;
+    font-size: 17px;
+    padding: 3px;
+}
+
+input:focus {
+    outline: none;
+    background-color: var(--bgFocus);
+    border: var(--borderFocus);
+    border-radius: var(--btnRadius);
+}
+
+textarea:focus {
+    outline: none;
+    background-color: var(--bgFocus);
+    border: var(--borderFocus);
+    border-radius: var(--btnRadius);
+}
+
+label {
+    font-size: 0.9em;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #6a6a6a6a;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    padding-top: 15%;
+    padding-left: 10%;
+    z-index: 100;
+
+}
+
 .btn {
     background-color: transparent;
     border: var(--btnBorder);
     border-radius: var(--btnRadius);
     padding: 5px;
 }
-.btn:hover{
+
+.btn:hover {
     cursor: pointer;
     transform: scale(1.01);
     /*background-color: var(--bg1);*/
 }
-#main {
+
+.btn:active {
+    background-color: var(--btnBgActive);
+    color: var(--btnFontActive);
+}
+
+.icon {
+    background-color: transparent;
+    border: none;
+}
+
+.icon:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    /*background-color: var(--bg1);*/
+}
+
+.editIcon {
+    background: url("../icons/edit_square_black.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 30px;
+}
+
+.deleteIcon {
+    background: url("../icons/delete_icon_red.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 30px;
+}
+
+.completeIcon {
+    background: url("../icons/complete_black.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 20px;
+}
+
+.completedIcon {
+    background: url("../icons/complete_blue.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 20px;
+}
+
+.closeIcon {
+    background: url("../icons/close_black.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 12px;
+    width: 12px;
+}
+
+/*FORM*/
+.popup {
     background-color: var(--bg1);
-    grid-column: 2 / 3;
-    grid-row: 1 / 3;
-    height: 100%;
-    width: 100%;
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    padding: 0.4em 1.2em 1em 1em;
+    border-radius: var(--divRadius);
+    border: var(--divBorder2);
+}
+
+.popup form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+    margin: 10 20px;
+}
+
+.popup .formItem {
+    display: grid;
+    grid-template-columns: 100px 280px;
+    gap: 0.5em;
+}
+
+.saveBtn {
+    font-size: 0.8em;
+    padding: 0.2em 1.5em;
+    margin: auto;
 }

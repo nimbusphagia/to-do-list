@@ -1,3 +1,4 @@
+import Task from "./Task";
 class List {
     #title;
     #tasks;
@@ -57,6 +58,11 @@ class List {
         }
         console.log("The ID: " + id + "doesn't match any task.");
         return null;
+    }
+    addNewTask(){
+        const newTask = new Task();
+        this.addTask(newTask);
+        return newTask;
     }
 }
 export default List;

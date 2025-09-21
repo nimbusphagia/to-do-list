@@ -1,5 +1,5 @@
 class Stylist {
-    colorNode(node, color, font = false, bg = false, border = false, borderStyle = "1px solid") {
+    static colorNode(node, color, font = false, bg = false, border = false, borderStyle = "1px solid") {
         if (font) {
             node.style.color = color;
         }
@@ -10,4 +10,9 @@ class Stylist {
             node.style.border = borderStyle + color;
         }
     }
+    static capitalizeFirst(word) {
+        if (!word) return "";
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    }
 }
+export default Stylist;
