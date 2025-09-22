@@ -56,11 +56,11 @@ class NodeFactory {
         const btnContainer = this.newContainer([closeBtn], ["popupBtns"])
 
         const form = document.createElement("form");
-        const titleInput = this.newFormItem("title", title, "text");
+        const titleInput = this.newFormItem("title", title, "text", "Title");
         form.appendChild(titleInput);
 
         if (description != null && date !== null) {
-            const descriptionInput = this.newFormItem("description", description, "textarea");
+            const descriptionInput = this.newFormItem("description", description, "textarea", "Description");
             const dateInput = this.newFormItem("date", date, "date");
             form.appendChild(descriptionInput);
             form.appendChild(dateInput);
@@ -77,20 +77,23 @@ class NodeFactory {
             popup.remove();
         });
 
-        return popup;
+        return { popup, form, submitBtn };
     }
-    static newFormItem(name, value, type) {
+    static newFormItem(name, value, type, placeholder = null) {
         const label = document.createElement("label");
         label.htmlFor = name;
         label.textContent = `${Stylist.capitalizeFirst(name)}:`;
         let input = document.createElement("input");
         input.type = type;
-        if(type == "textarea"){
+        if (type == "textarea") {
             input = document.createElement("textarea");
         }
         input.id = name;
         input.name = name;
         input.value = value;
+        if (placeholder != null) {
+            input.placeholder = placeholder;
+        }
         const inputDiv = this.newContainer([label, input], ["formItem"]);
         return inputDiv;
     }
@@ -110,6 +113,15 @@ class NodeFactory {
         }
         popup.style.zIndex = "auto";
 
+    }
+    static newPrompt(question, positiveAnswer, negativeAnswer, positiveStyle = [], negativeStyle = []) {
+        const title = this.newTitle("h2", question, []);
+        const acceptBtn = this.newBtn("button", positiveAnswer, positiveStyle);
+        const cancelBtn = this.newBtn("button", negativeAnswer, negativeStyle);
+        const btnContainer = this.newContainer([acceptBtn, cancelBtn], ["promptAnswers"]);
+        const prompt = this.newContainer([title, btnContainer], ["prompt"]);
+        this.createOverlay(prompt);
+        return {prompt, acceptBtn, cancelBtn};
     }
 }
 export default NodeFactory;

@@ -7,13 +7,17 @@ class List {
 
     constructor(title = "New List", tasks = [], id = null) {
         this.#title = title;
-        this.#tasks = tasks;
+        this.#tasks = [];
         if (id == null) {
             this.#id = 10000 + List.#counter;
             List.#counter++;
         } else {
             this.#id = id;
         }
+        for (const task of tasks) {
+            this.addTask(task);
+        }
+
     }
     //GET AND SET
     getTitle() {
@@ -59,7 +63,7 @@ class List {
         console.log("The ID: " + id + "doesn't match any task.");
         return null;
     }
-    addNewTask(){
+    addNewTask() {
         const newTask = new Task();
         this.addTask(newTask);
         return newTask;

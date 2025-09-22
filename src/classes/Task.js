@@ -1,13 +1,13 @@
 import { format, parseISO} from "date-fns";
 class Task {
-    static #counter;
+    static #counter = 0;
     #title;
     #description;
     #date;
     #status;
     #listId;
     #id;
-    constructor(title = "New task", description = "Add a short description", date = "YYYY-MM-DD", status = "Ongoing", listId = 10000, id = null) {
+    constructor(title = "New task", description = "Add a short description", date = "2000-05-13", status = "Ongoing", listId = 1000, id = null) {
         this.#title = title;
         this.#description = description;
         this.#date = parseISO(date);
@@ -58,8 +58,12 @@ class Task {
         this.#listId = listId;
     }
     //METHODS
-    formatDate(pattern = "dd/MM/yyyy") {
+    formatDate(pattern = "dd MMM yyyy") {
+        //console.log(this.#date);
         return format(this.#date, pattern);
+    }
+    getDateForInput() {
+        return format(this.#date, "yyyy-MM-dd");
     }
 }
 export default Task;

@@ -23,6 +23,7 @@ body {
     --btnFontActive: #000000e4;
     --bgFocus: #d0d0d077;
     --borderFocus: 2px solid #ab535e;
+    --dangerColor: #d21414;
 }
 
 h1,
@@ -175,5 +176,50 @@ label {
 .saveBtn {
     font-size: 0.8em;
     padding: 0.2em 1.5em;
-    margin: auto;
+    margin: auto 0 auto auto;
+    /*left*/
+}
+
+.prompt {
+    background-color: var(--bg1);
+    height: 120px;
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6em;
+    padding: 0.8em;
+    border-radius: var(--divRadius);
+    border: var(--divBorder2);
+    justify-content: center;
+}
+
+.prompt h2 {
+    font-size: 1em;
+    text-align: center;
+}
+
+.promptAnswers {
+    display: flex;
+    justify-content: space-around;
+}
+
+.confirmationBtn {
+    background-color: transparent;
+    border-radius: var(--btnRadius);
+    padding: 4px 18px;
+    font-size: 0.8em;
+}
+
+.confirmationBtn:hover {
+    cursor: pointer;
+    transform: scale(1.02);
+}
+
+.dangerTitle {
+    color: var(--dangerColor);
+    border: 2px solid var(--dangerColor);
+}
+
+.neutralTitle {
+    border: 2px solid black;
 }

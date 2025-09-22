@@ -3,20 +3,18 @@ import "./css/main.css";
 import Sidebar from "./gui/Sidebar";
 
 //MODEL
+import ListsMemory from "./classes/ListsMemory";
 import List from "./classes/List";
 import Task from "./classes/Task";
 import MainGui from "./gui/MainGui";
 
 const appController = () => {
-    const lists = [];
-    const getListById = (id) => {
-        for (const list of lists) {
-            if (id == list.getId()) {
-                return list;
-            }
-        }
-        return null;
-    }
+    const memory = new ListsMemory();
+    const lists = memory.getLists();
+
+    const main = new MainGui();
+    const sidebar = new Sidebar();
+
     const mockContent = () => {
         const task1 = new Task();
         const task2 = new Task();
@@ -28,37 +26,49 @@ const appController = () => {
         const task8 = new Task();
         const task9 = new Task();
         const task10 = new Task();
-        const list1 = new List("List 1", [task1, task2, task3, task4, task5],);
-        const list2 = new List("List 2", [task6, task7, task8, task9],);
-        const list3 = new List("List 3", [task10],);
-        lists.push(list1);
-        lists.push(list2);
-        lists.push(list3);
+        const list1 = new List("List 1", [task1, task2, task3, task4, task5]);
+        const list2 = new List("List 2", [task6, task7, task8, task9]);
+        const list3 = new List("List 3", [task10]);
+        memory.addList(list1);
+        memory.addList(list2);
+        memory.addList(list3);
     }
 
     const renderGui = () => {
-        const main = new MainGui();
-        const sidebar = new Sidebar();
+        const sidebarNode = sidebar.render(memory);
 
-        const listsContainer = sidebar.render(lists);
-        listsContainer.addEventListener("click", (e) => {
+        sidebarNode.addEventListener("click", (e) => {
             const listDiv = e.target.closest(".sidebarListDiv");
-            console.log(listDiv);
-            if (listDiv) {
-                const currentList = getListById(listDiv.id);
-                if (currentList) {
-                    console.log(currentList);
-                    main.render(currentList);
+
+            if (!listDiv) return;
+
+            const currentList = memory.getListById(Number(listDiv.id));
+            if (!currentList) return;
+
+            // Render principal
+            const mainNode = main.render(currentList);
+            mainNode.addEventListener("click", (e) => {
+                if (e.target.classList.contains("mainEditBtn")) {
+                    main.promptEditList(currentList, sidebar, memory);
                 }
-            }
-        })
+                if(e.target.classList.contains("mainRemoveBtn")){
+                    console.log("remove btn");
+                    main.promptDeleteList(currentList, sidebar, memory);
+                }
+            })
+        });
+    };
+
+
+    const start = () => {
+        mockContent();
+        renderGui();
     }
-    return { renderGui, mockContent }
+    return { start }
 }
 
 const app = appController();
-app.mockContent();
-app.renderGui();
+app.start();
 
 
 console.log("all working");
