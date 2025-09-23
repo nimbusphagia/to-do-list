@@ -90,7 +90,10 @@ class NodeFactory {
         }
         input.id = name;
         input.name = name;
-        input.value = value;
+        if (value != "") {
+            input.value = value;
+        }
+
         if (placeholder != null) {
             input.placeholder = placeholder;
         }
@@ -121,7 +124,7 @@ class NodeFactory {
         const btnContainer = this.newContainer([acceptBtn, cancelBtn], ["promptAnswers"]);
         const prompt = this.newContainer([title, btnContainer], ["prompt"]);
         this.createOverlay(prompt);
-        return {prompt, acceptBtn, cancelBtn};
+        return { prompt, acceptBtn, cancelBtn };
     }
 }
 export default NodeFactory;

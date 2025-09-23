@@ -63,10 +63,30 @@ class List {
         console.log("The ID: " + id + "doesn't match any task.");
         return null;
     }
-    addNewTask() {
-        const newTask = new Task();
-        this.addTask(newTask);
-        return newTask;
+
+    //SERIALIZATION
+    toJSON() {
+        return {
+            title: this.#title,
+            id: this.#id,
+            tasks: this.#tasks.map(t => t.toJSON()), // serialize tasks too
+        };
     }
+
+    static fromJSON(obj) {
+        const list = new List(
+            obj.title,
+            obj.tasks.map(t => Task.fromJSON(t)),
+            obj.id
+        );
+
+        // update List counter
+        if (obj.id >= 10000 + List.#counter) {
+            List.#counter = obj.id - 10000 + 1;
+        }
+
+        return list;
+    }
+
 }
 export default List;

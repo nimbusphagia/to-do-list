@@ -1,4 +1,4 @@
-import { format, parseISO} from "date-fns";
+import { format, parseISO } from "date-fns";
 class Task {
     static #counter = 0;
     #title;
@@ -7,10 +7,15 @@ class Task {
     #status;
     #listId;
     #id;
-    constructor(title = "New task", description = "Add a short description", date = "2000-05-13", status = "Ongoing", listId = 1000, id = null) {
+    constructor(title = "New task", description = "Add a short description", date = "", status = "Ongoing", listId = 1000, id = null) {
         this.#title = title;
         this.#description = description;
-        this.#date = parseISO(date);
+        if (!date) {       // catches "", null, undefined
+            this.#date = null;
+        } else {
+            this.#date = parseISO(date);
+        }
+
         this.#status = status;
         this.#listId = listId;
         if (id == null) {
@@ -37,8 +42,13 @@ class Task {
         return this.#date;
     }
     setDate(date) {
-        this.#date = parseISO(date);
+        if (!date) {       // catches "", null, undefined
+            this.#date = null;
+        } else {
+            this.#date = parseISO(date);
+        }
     }
+
     getStatus() {
         return this.#status;
     }
@@ -59,11 +69,40 @@ class Task {
     }
     //METHODS
     formatDate(pattern = "dd MMM yyyy") {
-        //console.log(this.#date);
+        if (!this.#date) return "";  // ✅ return empty if no date
         return format(this.#date, pattern);
     }
     getDateForInput() {
+        if (!this.#date) return ""; // ✅ return empty string for <input type="date">
         return format(this.#date, "yyyy-MM-dd");
+    }
+    //SERIALIZATION
+    toJSON() {
+        return {
+            title: this.#title,
+            description: this.#description,
+            date: this.#date ? format(this.#date, "yyyy-MM-dd") : "", // 
+            status: this.#status,
+            listId: this.#listId,
+            id: this.#id,
+        };
+    }
+    static fromJSON(obj) {
+        const task = new Task(
+            obj.title,
+            obj.description,
+            obj.date || "",
+            obj.status,
+            obj.listId,
+            obj.id
+        );
+
+        // update Task counter
+        if (obj.id >= 100 + Task.#counter) {
+            Task.#counter = obj.id - 100 + 1;
+        }
+
+        return task;
     }
 }
 export default Task;

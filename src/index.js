@@ -46,12 +46,12 @@ const appController = () => {
             if (!currentList) return;
 
             // Render principal
-            const mainNode = main.render(currentList);
+            const mainNode = main.render(currentList, memory);
             mainNode.addEventListener("click", (e) => {
                 if (e.target.classList.contains("mainEditBtn")) {
                     main.promptEditList(currentList, sidebar, memory);
                 }
-                if(e.target.classList.contains("mainRemoveBtn")){
+                if (e.target.classList.contains("mainRemoveBtn")) {
                     console.log("remove btn");
                     main.promptDeleteList(currentList, sidebar, memory);
                 }
@@ -61,7 +61,9 @@ const appController = () => {
 
 
     const start = () => {
-        mockContent();
+        const loaded = memory.load();
+        if (!loaded) {
+        }
         renderGui();
     }
     return { start }

@@ -2,17 +2,17 @@ import NodeFactory from "../lib/NodeFactory";
 import "../css/body.css";
 import Task from "../classes/Task";
 class MainGui {
-    render(list) {
+    render(list, memory) {
         const mainNode = document.getElementById("main");
         mainNode.innerHTML = "";
 
-        const tasksParent = this.segmentList(mainNode, list);
+        const tasksParent = this.segmentList(mainNode, list, memory);
         for (const task of list.getTasks()) {
-            this.appendTask(task, tasksParent, list);
+            this.appendTask(task, tasksParent, list, memory);
         }
         return mainNode;
     }
-    segmentList(mainNode, list) {
+    segmentList(mainNode, list, memory) {
         const title = NodeFactory.newTitle("h2", list.getTitle(), ["mainTitle"]); //SIDEBAR TITLE
         const editBtn = NodeFactory.newBtn("button", "", ["mainEditBtn", "icon", "editIcon"]);
         const removeBtn = NodeFactory.newBtn("button", "", ["mainRemoveBtn", "icon", "deleteIcon"]);
@@ -26,16 +26,13 @@ class MainGui {
         mainNode.appendChild(body);
         //EDIT LIST TITLE OUTSIDE
         //ADD NEW TASK
-        addTaskBtn.addEventListener("click", () => this.promptNewTask(list));
+        addTaskBtn.addEventListener("click", () => this.promptNewTask(list, memory));
         return tasksContainer;
     }
-    appendTask(task, parent, list) {
+    appendTask(task, parent, list, memory) {
         //Header
         const title = NodeFactory.newTitle("h4", task.getTitle(), ["mainTaskTitle"]);
         const completeBtn = NodeFactory.newBtn("button", "", ["mainTaskCompleteBtn", "icon", "completeIcon"]);
-        if (task.getStatus() == "Completed") {
-            completeBtn.classList.replace("completeIcon", "completedIcon");
-        }
         const titlePair = NodeFactory.newContainer([completeBtn, title], ["mainTaskTitlePair"]);
 
         const editBtn = NodeFactory.newBtn("button", "", ["mainTaskEditBtn", "icon", "editIcon"]);
@@ -51,12 +48,27 @@ class MainGui {
         parent.appendChild(container);
 
         //EDIT Task
-        editBtn.addEventListener("click", () => this.promptEditTask(task, list));
+        editBtn.addEventListener("click", () => this.promptEditTask(task, list, memory));
         //DELETE TASK
-        removeBtn.addEventListener("click", () => this.promptDeleteTask(task, list));
+        removeBtn.addEventListener("click", () => this.promptDeleteTask(task, list, memory));
+        //APPLY STYLE TO COMPLETED
+        if (task.getStatus() == "Completed") {
+            completeBtn.classList.replace("completeIcon", "completedIcon");
+        }
+        //ENABLE COMPLETE BTN
+        completeBtn.addEventListener("click", () => {
+            if (task.getStatus() == "Completed") {
+                task.setStatus("Ongoing");
+                completeBtn.classList.replace("completedIcon", "completeIcon");
+            } else if (task.getStatus() == "Ongoing") {
+                task.setStatus("Completed");
+                completeBtn.classList.replace("completeIcon", "completedIcon");
+            }
+            memory.save();
+        })
         return container;
     }
-    promptEditTask(task, list) {
+    promptEditTask(task, list, memory) {
         const title = task.getTitle() || "";
         const description = task.getDescription() || "";
         const date = task.getDateForInput() || "";
@@ -72,13 +84,14 @@ class MainGui {
             task.setTitle(titleVal);
             task.setDescription(descriptionVal);
             task.setDate(dateVal);
+            memory.save();
             //Close form and overlay
             NodeFactory.removeOverlay(taskEditForm.popup);
             taskEditForm.popup.remove();
             this.render(list);
         });
     }
-    promptNewTask(list) {
+    promptNewTask(list, memory) {
         const taskForm = NodeFactory.newForm("", "", "");
         taskForm.submitBtn.addEventListener("click", (e) => {
             e.preventDefault();
@@ -89,17 +102,19 @@ class MainGui {
             //Create new task and add to list
             const newTask = new Task(titleVal, descriptionVal, dateVal);
             list.addTask(newTask);
+            memory.save();
             //Close form and overlay
             NodeFactory.removeOverlay(taskForm.popup);
             taskForm.popup.remove();
             this.render(list);
         });
     }
-    promptDeleteTask(task, list) {
+    promptDeleteTask(task, list, memory) {
         const deletePrompt = NodeFactory.newPrompt("Are you sure you want to permanently delete this task?", "Delete", "Cancel", ["dangerTitle", "confirmationBtn"], ["neutralTitle", "confirmationBtn"]);
         deletePrompt.prompt.addEventListener("click", (e) => {
             if (e.target.classList.contains("dangerTitle")) {
                 list.removeTaskById(task.getId());
+                memory.save();
             }
             NodeFactory.removeOverlay(deletePrompt.prompt);
             deletePrompt.prompt.remove();
@@ -117,6 +132,7 @@ class MainGui {
             const titleVal = listEditForm.form.querySelector("[name='title']").value;
             //Change list title
             list.setTitle(titleVal);
+            memory.save();
             //Close form and overlay
             NodeFactory.removeOverlay(listEditForm.popup);
             listEditForm.popup.remove();
@@ -131,14 +147,15 @@ class MainGui {
         deletePrompt.prompt.addEventListener("click", (e) => {
             if (e.target.classList.contains("dangerTitle")) {
                 memory.removeListById(list.getId());
+                memory.save();
+                //LIMPIA EL MAIN
+                const mainNode = document.getElementById("main");
+                mainNode.innerHTML = "";
+                //ACTUALIZA EL SIDEBAR
+                sidebar.render(memory);
             }
             NodeFactory.removeOverlay(deletePrompt.prompt);
             deletePrompt.prompt.remove();
-            //LIMPIA EL MAIN
-            const mainNode = document.getElementById("main");
-            mainNode.innerHTML = "";
-            //ACTUALIZA EL SIDEBAR
-            sidebar.render(memory);
         });
     }
 }

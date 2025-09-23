@@ -18,11 +18,13 @@ class ListsMemory {
     //METHODS
     addList(list) {
         this.#lists.push(list);
+        this.save();
     }
     removeListById(id) {
         const list = this.getListById(id);
         if (list) {
             this.#lists = this.#lists.filter(l => l.getId() !== id);
+            this.save();
             return list;
         }
         console.log("The ID: " + id + "doesn't match any list.");
@@ -37,10 +39,17 @@ class ListsMemory {
         console.log("The ID: " + id + "doesn't match any task.");
         return null;
     }
-    addNewList() {
-        const newList = new List();
-        this.addList(newList);
-        return newList;
+    
+    save() {
+        localStorage.setItem("lists", JSON.stringify(this.#lists));
+    }
+
+    load() {
+        const data = localStorage.getItem("lists");
+        if (data) {
+            const rawLists = JSON.parse(data);
+            this.#lists = rawLists.map(l => List.fromJSON(l));
+        }
     }
 }
 export default ListsMemory;

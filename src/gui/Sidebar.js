@@ -12,6 +12,7 @@ class Sidebar {
         for (const list of lists) {
             this.appendList(list, listsParent);
         }
+        memory.save();
         return sidebarNode;
     }
     segmentSidebar(sidebarNode, memory) {
