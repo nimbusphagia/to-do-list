@@ -40,6 +40,9 @@ class Sidebar {
             e.preventDefault();
             // Collect values
             const titleVal = listForm.form.querySelector("[name='title']").value;
+            if (!listForm.form.reportValidity()) {
+                return; // stops here if required fields are missing
+            }
             //Create new list and add to array
             const newList = new List(titleVal, []);
             console.log(newList);

@@ -12,18 +12,24 @@ body {
     grid-template-columns: 1fr 4.5fr;
     grid-template-rows: 1fr 9fr;
     /*VARIABLES*/
-    --bg1: #d1d1d1;
-    --bg2: #c1c1c1;
-    --divBorder1: 1.8px solid black;
+    --bg1: #ffffff;
+    --bg2: #ffffffde;
+    --divBorder1: 2px solid black;
     --divBorder2: 2px solid black;
     --divRadius: 6px;
-    --btnBorder: 1.5px solid black;
+    --btnBorder: 2px solid black;
     --btnRadius: 5px;
-    --btnBgActive: #c5c5c5bd;
-    --btnFontActive: #000000e4;
-    --bgFocus: #d0d0d077;
-    --borderFocus: 2px solid #ab535e;
+    --btnBgActive: white
+        /* #f37685*/
+    ;
+    --btnFontActive: black;
+    --bgFocus: #dae0ff4c;
+    --borderFocus: 2px solid #485eff;
     --dangerColor: #d21414;
+    --fontGrey: #232323f4;
+    --completedIconblack: url("../icons/checked_black.png");
+    --completedIconblue: url("../icons/checked_blue.png");
+    --completedIconred: url("../icons/checked_red.png");
 }
 
 h1,
@@ -62,6 +68,18 @@ textarea:focus {
     border-radius: var(--btnRadius);
 }
 
+input::placeholder {
+    color: #1e1e1ed3;
+    opacity: 1;
+    /* Some browsers apply lower opacity by default */
+}
+
+textarea::placeholder {
+    color: #1e1e1ed3;
+    opacity: 1;
+    /* Some browsers apply lower opacity by default */
+}
+
 label {
     font-size: 0.9em;
 }
@@ -98,6 +116,7 @@ label {
 .btn:active {
     background-color: var(--btnBgActive);
     color: var(--btnFontActive);
+    transform: scale(1.04);
 }
 
 .icon {
@@ -126,14 +145,14 @@ label {
 }
 
 .completeIcon {
-    background: url("../icons/complete_black.png");
+    background: url("../icons/checkbox_grey.png");
     background-repeat: no-repeat;
     background-position: center;
     width: 20px;
 }
 
 .completedIcon {
-    background: url("../icons/complete_blue.png");
+    background: var(--completedIconblack);
     background-repeat: no-repeat;
     background-position: center;
     width: 20px;
@@ -158,19 +177,32 @@ label {
     padding: 0.4em 1.2em 1em 1em;
     border-radius: var(--divRadius);
     border: var(--divBorder2);
+
 }
 
 .popup form {
     display: flex;
     flex-direction: column;
     gap: 0.8em;
-    margin: 10 20px;
+    margin: 5px 22px;
 }
 
 .popup .formItem {
     display: grid;
     grid-template-columns: 100px 280px;
     gap: 0.5em;
+}
+
+.formRadioContainer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em 1.5em;
+}
+
+.radioInput {
+    font-size: 0.9em;
+    display: flex;
+    gap: 0.4em;
 }
 
 .saveBtn {
@@ -180,6 +212,7 @@ label {
     /*left*/
 }
 
+/*PROMPT*/
 .prompt {
     background-color: var(--bg1);
     height: 120px;

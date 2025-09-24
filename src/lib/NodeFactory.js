@@ -51,19 +51,23 @@ class NodeFactory {
 
         return btn;
     }
-    static newForm(title = null, description = null, date = null) {
+    static newForm(title = null, description = null, date = null, priority = null) {
         const closeBtn = this.newBtn("button", "", ["icon", "closeIcon"])
         const btnContainer = this.newContainer([closeBtn], ["popupBtns"])
 
         const form = document.createElement("form");
         const titleInput = this.newFormItem("title", title, "text", "Title");
+        titleInput.querySelector("input[name='title']").required = true;
         form.appendChild(titleInput);
 
-        if (description != null && date !== null) {
+        if (description != null && date !== null && priority !== null) {
             const descriptionInput = this.newFormItem("description", description, "textarea", "Description");
             const dateInput = this.newFormItem("date", date, "date");
+            const priorityInput = this.newRadioInput("priority", ["Casual", "Important", "Urgent"], priority);
+            priorityInput.querySelector("input[name='priority']").required = true;
             form.appendChild(descriptionInput);
             form.appendChild(dateInput);
+            form.appendChild(priorityInput);
         }
         const submitBtn = this.newBtn("button", "Save", ["btn", "saveBtn"]);
         form.appendChild(submitBtn);
@@ -100,6 +104,37 @@ class NodeFactory {
         const inputDiv = this.newContainer([label, input], ["formItem"]);
         return inputDiv;
     }
+    static newRadioInput(name, options = [], value) {
+        const nodes = [];
+
+        for (const option of options) {
+            const input = document.createElement("input");
+            input.type = "radio";
+            input.name = name;
+            input.value = option;
+            if(input.value == value){
+                input.checked = true;
+            }
+
+            // Create a safe, unique id for each radio
+            const safeId = `${name}-${option.replace(/\s+/g, "-").toLowerCase()}`;
+            input.id = safeId;
+
+            const label = document.createElement("label");
+            label.classList.add("radioInput");
+            label.htmlFor = safeId;
+            label.textContent = Stylist.capitalizeFirst(option);
+
+            // Put input *inside* label for better accessibility
+            label.prepend(input);
+
+            nodes.push(label);
+        }
+
+        const inputContainer = this.newContainer(nodes, ["formRadioContainer"]);
+        return inputContainer;
+    }
+
     static createOverlay(popup) {
         this.removeOverlay(popup);
         const overlay = document.createElement("div");

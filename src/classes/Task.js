@@ -7,7 +7,8 @@ class Task {
     #status;
     #listId;
     #id;
-    constructor(title = "New task", description = "Add a short description", date = "", status = "Ongoing", listId = 1000, id = null) {
+    #priority
+    constructor(title = "New task", description = "Add a short description", date = "", status = "Ongoing", priority = "Casual", listId = 1000, id = null) {
         this.#title = title;
         this.#description = description;
         if (!date) {       // catches "", null, undefined
@@ -17,6 +18,7 @@ class Task {
         }
 
         this.#status = status;
+        this.#priority = priority;
         this.#listId = listId;
         if (id == null) {
             this.#id = 100 + Task.#counter;
@@ -55,6 +57,12 @@ class Task {
     setStatus(status) {
         this.#status = status;
     }
+    getPriority(){
+        return this.#priority;
+    }
+    setPriority(priority){
+        this.#priority = priority;
+    }
     getId() {
         return this.#id;
     }
@@ -83,6 +91,7 @@ class Task {
             description: this.#description,
             date: this.#date ? format(this.#date, "yyyy-MM-dd") : "", // 
             status: this.#status,
+            priority: this.#priority,
             listId: this.#listId,
             id: this.#id,
         };
@@ -93,6 +102,7 @@ class Task {
             obj.description,
             obj.date || "",
             obj.status,
+            obj.priority,
             obj.listId,
             obj.id
         );

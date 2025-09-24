@@ -12,7 +12,7 @@ const appController = () => {
     const memory = new ListsMemory();
     const lists = memory.getLists();
 
-    const main = new MainGui();
+    const main = new MainGui(memory);
     const sidebar = new Sidebar();
 
     const mockContent = () => {
@@ -46,14 +46,13 @@ const appController = () => {
             if (!currentList) return;
 
             // Render principal
-            const mainNode = main.render(currentList, memory);
+            const mainNode = main.render(currentList);
             mainNode.addEventListener("click", (e) => {
                 if (e.target.classList.contains("mainEditBtn")) {
-                    main.promptEditList(currentList, sidebar, memory);
+                    main.promptEditList(currentList, sidebar);
                 }
                 if (e.target.classList.contains("mainRemoveBtn")) {
-                    console.log("remove btn");
-                    main.promptDeleteList(currentList, sidebar, memory);
+                    main.promptDeleteList(currentList, sidebar);
                 }
             })
         });
@@ -73,4 +72,3 @@ const app = appController();
 app.start();
 
 
-console.log("all working");

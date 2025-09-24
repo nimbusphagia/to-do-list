@@ -4,7 +4,6 @@
     grid-row: 1 / 3;
     height: 100%;
     width: 100%;
-
     display: grid;
     grid-template-rows: 7vh 93vh;
 }
@@ -36,7 +35,7 @@
 .sidebarListDiv {
     border: var(--divBorder1);
     border-radius: var(--divRadius);
-    padding: 1.5px;
+    padding: 3.5px;
 }
 
 .sidebarListDiv:hover {
@@ -45,5 +44,5 @@
 }
 
 .sidebarListTitle {
-    font-size: 1.1em;
+    font-size: 1em;
 }

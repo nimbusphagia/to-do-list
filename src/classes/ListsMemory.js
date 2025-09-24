@@ -1,15 +1,20 @@
 import List from "./List";
+import Task from "./Task";
 class ListsMemory {
     #lists
+    #initialTask = new Task("Do something!","Think about it", "2025-09-23");
+    #initialList = new List("Today",[this.#initialTask]);
     constructor(lists = []) {
-        this.#lists = [];
+        this.#lists = [this.#initialList];
         for (const list of lists) {
-            this.addList(list);
+            if (!this.#lists.find(l => l.getTitle() === list.getTitle())) {
+                this.addList(list);
+            }
         }
-
     }
+
     //GET AND SET
-    getLists(){
+    getLists() {
         return this.#lists;
     }
     setLists(lists) {
@@ -39,7 +44,7 @@ class ListsMemory {
         console.log("The ID: " + id + "doesn't match any task.");
         return null;
     }
-    
+
     save() {
         localStorage.setItem("lists", JSON.stringify(this.#lists));
     }
